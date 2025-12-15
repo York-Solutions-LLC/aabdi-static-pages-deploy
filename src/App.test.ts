@@ -4,6 +4,6 @@ import App from "./App.vue";
 describe("App.vue", () => {
   it("renders Hello Abdulkader", () => {
     const wrapper = mount(App);
-    expect(wrapper.text()).toContain("Hello, World");
+    expect(wrapper.text()).toContain("Hello, Abdulkader");
   });
 });
