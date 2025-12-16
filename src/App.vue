@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import HelloWorld from "./components/HelloWorld.vue";
+import Calculator from "./components/Calculator.vue";
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="min-h-screen w-screen bg-gray-900 text-gray-100">
+    <div class="flex justify-center w-screen mx-auto">
+      <a href="https://vite.dev" target="_blank">
+        <img src="/vite.svg" class="logo" alt="Vite logo" />
+      </a>
+      <a href="https://vuejs.org/" target="_blank">
+        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+      </a>
+    </div>
+    <div class="py-10">
+      <HelloWorld msg="Hello, Abdulkader" />
+      <Calculator />
+    </div>
   </div>
-  <HelloWorld msg="Hello, Abdulkader" />
 </template>
 
 <style scoped>
