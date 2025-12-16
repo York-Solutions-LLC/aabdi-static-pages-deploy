@@ -26,7 +26,8 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm test
+        run: |
+          npm run test | tee test.log
       - name: Test Summary
         if: always()
         run: |
@@ -56,7 +57,8 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm run build
+        run: |
+          npm run build | tee build.log
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
