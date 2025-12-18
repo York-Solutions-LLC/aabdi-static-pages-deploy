@@ -36,9 +36,9 @@ jobs:
           echo "- Language: TypeScript" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
-          TEST_FILES_LINE=$(grep -E "^ Test Files" test.log | sed 's/^ *//')
-          TESTS_LINE=$(grep -E "^      Tests" test.log | sed 's/^ *//')
-          DURATION_LINE=$(grep -E "^   Duration" test.log | sed 's/^ *//')
+          TEST_FILES_LINE=$(grep -E "Test Files" test.log | head -n 1 || true)
+          TESTS_LINE=$(grep -E "^.*Tests\s+" test.log | head -n 1 || true)
+          DURATION_LINE=$(grep -E "Duration" test.log | head -n 1 || true)
 
           PASSED_FILES=$(echo "$TEST_FILES_LINE" | grep -oE "[0-9]+ passed" || echo "0 passed")
           FAILED_FILES=$(echo "$TEST_FILES_LINE" | grep -oE "[0-9]+ failed" || echo "0 failed")
