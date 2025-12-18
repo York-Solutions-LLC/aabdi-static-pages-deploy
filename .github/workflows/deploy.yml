@@ -36,24 +36,26 @@ jobs:
           echo "- Language: TypeScript" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
-          TEST_FILES_LINE=$(grep -E "Test Files" test.log | head -n 1 || true)
-          TESTS_LINE=$(grep -E "^.*Tests\s+" test.log | head -n 1 || true)
-          DURATION_LINE=$(grep -E "Duration" test.log | head -n 1 || true)
+          CLEAN_LOG=$(sed 's/\x1b\[[0-9;]*m//g' test.log)
 
-          PASSED_FILES=$(echo "$TEST_FILES_LINE" | grep -oE "[0-9]+ passed" || echo "0 passed")
-          FAILED_FILES=$(echo "$TEST_FILES_LINE" | grep -oE "[0-9]+ failed" || echo "0 failed")
+          TEST_FILES_LINE=$(echo "$CLEAN_LOG" | grep -E "^Test Files" | head -n 1)
+          TESTS_LINE=$(echo "$CLEAN_LOG" | grep -E "^Tests" | head -n 1)
+          DURATION_LINE=$(echo "$CLEAN_LOG" | grep -E "^Duration" | head -n 1)
 
-          PASSED_TESTS=$(echo "$TESTS_LINE" | grep -oE "[0-9]+ passed" || echo "0 passed")
-          FAILED_TESTS=$(echo "$TESTS_LINE" | grep -oE "[0-9]+ failed" || echo "0 failed")
+          FILES_PASSED=$(echo "$TEST_FILES_LINE" | grep -oE "[0-9]+ passed" || echo "0 passed")
+          FILES_FAILED=$(echo "$TEST_FILES_LINE" | grep -oE "[0-9]+ failed" || echo "0 failed")
+
+          TESTS_PASSED=$(echo "$TESTS_LINE" | grep -oE "[0-9]+ passed" || echo "0 passed")
+          TESTS_FAILED=$(echo "$TESTS_LINE" | grep -oE "[0-9]+ failed" || echo "0 failed")
 
           echo "Test Files:" >> $GITHUB_STEP_SUMMARY
-          echo "- Passed: $PASSED_FILES" >> $GITHUB_STEP_SUMMARY
-          echo "- Failed: $FAILED_FILES" >> $GITHUB_STEP_SUMMARY
+          echo "- Passed: $FILES_PASSED" >> $GITHUB_STEP_SUMMARY
+          echo "- Failed: $FILES_FAILED" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           echo "Tests:" >> $GITHUB_STEP_SUMMARY
-          echo "- Passed: $PASSED_TESTS" >> $GITHUB_STEP_SUMMARY
-          echo "- Failed: $FAILED_TESTS" >> $GITHUB_STEP_SUMMARY
+          echo "- Passed: $TESTS_PASSED" >> $GITHUB_STEP_SUMMARY
+          echo "- Failed: $TESTS_FAILED" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           echo "$DURATION_LINE" >> $GITHUB_STEP_SUMMARY
@@ -92,13 +94,13 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           BUILD_STATUS=$(grep -E "built in" build.log || true)
-          ASSETS=$(grep -E "dist/" build.log | tail -n 5 || true)
 
           if [ -n "$BUILD_STATUS" ]; then
             echo "Status: Success" >> $GITHUB_STEP_SUMMARY
             echo "$BUILD_STATUS" >> $GITHUB_STEP_SUMMARY
           else
             echo "Status: Failed" >> $GITHUB_STEP_SUMMARY
+            echo "Build did not complete successfully." >> $GITHUB_STEP_SUMMARY
           fi
 
   deploy:
