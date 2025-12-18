@@ -36,26 +36,24 @@ jobs:
           echo "- Language: TypeScript" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
-          CLEAN_LOG=$(sed 's/\x1b\[[0-9;]*m//g' test.log)
+          TEST_FILES_LINE=$(grep -E "^ Test Files" test.log || true)
+          TESTS_LINE=$(grep -E "^      Tests" test.log || true)
+          DURATION_LINE=$(grep -E "^   Duration" test.log || true)
 
-          TEST_FILES_LINE=$(echo "$CLEAN_LOG" | grep -E "^Test Files" | head -n 1)
-          TESTS_LINE=$(echo "$CLEAN_LOG" | grep -E "^Tests" | head -n 1)
-          DURATION_LINE=$(echo "$CLEAN_LOG" | grep -E "^Duration" | head -n 1)
+          FILES_PASSED=$(echo "$TEST_FILES_LINE" | grep -oE "[0-9]+ passed" | grep -oE "[0-9]+" || echo 0)
+          FILES_FAILED=$(echo "$TEST_FILES_LINE" | grep -oE "[0-9]+ failed" | grep -oE "[0-9]+" || echo 0)
 
-          FILES_PASSED=$(echo "$TEST_FILES_LINE" | grep -oE "[0-9]+ passed" || echo "0 passed")
-          FILES_FAILED=$(echo "$TEST_FILES_LINE" | grep -oE "[0-9]+ failed" || echo "0 failed")
+          TESTS_PASSED=$(echo "$TESTS_LINE" | grep -oE "[0-9]+ passed" | grep -oE "[0-9]+" || echo 0)
+          TESTS_FAILED=$(echo "$TESTS_LINE" | grep -oE "[0-9]+ failed" | grep -oE "[0-9]+" || echo 0)
 
-          TESTS_PASSED=$(echo "$TESTS_LINE" | grep -oE "[0-9]+ passed" || echo "0 passed")
-          TESTS_FAILED=$(echo "$TESTS_LINE" | grep -oE "[0-9]+ failed" || echo "0 failed")
-
-          echo "Test Files:" >> $GITHUB_STEP_SUMMARY
-          echo "- Passed: $FILES_PASSED" >> $GITHUB_STEP_SUMMARY
-          echo "- Failed: $FILES_FAILED" >> $GITHUB_STEP_SUMMARY
+          echo "### Test Files" >> $GITHUB_STEP_SUMMARY
+          echo "Passed: $FILES_PASSED" >> $GITHUB_STEP_SUMMARY
+          echo "Failed: $FILES_FAILED" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
-          echo "Tests:" >> $GITHUB_STEP_SUMMARY
-          echo "- Passed: $TESTS_PASSED" >> $GITHUB_STEP_SUMMARY
-          echo "- Failed: $TESTS_FAILED" >> $GITHUB_STEP_SUMMARY
+          echo "### Tests" >> $GITHUB_STEP_SUMMARY
+          echo "Passed: $TESTS_PASSED" >> $GITHUB_STEP_SUMMARY
+          echo "Failed: $TESTS_FAILED" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           echo "$DURATION_LINE" >> $GITHUB_STEP_SUMMARY
