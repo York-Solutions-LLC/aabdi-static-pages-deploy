@@ -27,7 +27,7 @@ jobs:
 
       - name: Run tests
         run: |
-          npm run test -- --run --reporter=basic --no-color | tee test.log
+          npm run test -- --run --no-color | tee test.log
       - name: Test Summary
         if: always()
         run: |
