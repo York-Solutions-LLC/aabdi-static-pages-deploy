@@ -3,7 +3,8 @@ name: Deploys Vue app to GitHub Pages
 on:
   push:
     branches: [main]
-
+  pull_request:
+    branches: [main]
 permissions:
   contents: write
   pages: write
