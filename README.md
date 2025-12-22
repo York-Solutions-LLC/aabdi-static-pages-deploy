@@ -24,6 +24,23 @@ This repository is designed to be:
 
 ---
 
+## Repository Structure
+
+Key directories and files:
+
+- `src/` — Application source code
+  - `components/` — Vue components
+  - `App.vue` — Root component
+  - `main.ts` — Application entry point
+- `public/` — Static assets
+- `dist/` — Production build output (generated)
+- `.github/workflows/` — GitHub Actions CI/CD workflows
+- `vite.config.ts` — Vite configuration
+- `vitest.config.ts` — Vitest configuration
+- `tsconfig.json` — TypeScript configuration
+
+---
+
 ## Getting Started (Local Setup)
 
 ### Prerequisites
