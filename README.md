@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/York-Solutions-LLC/aabdi-static-pages-deploy/actions/workflows/deploy.yml/badge.svg)](https://github.com/York-Solutions-LLC/aabdi-static-pages-deploy/actions/workflows/deploy.yml)
 
-A minimal **Vue 3** application built with **Vite** and **TypeScript**, tested with **Vitest**, styled with **Tailwind CSS**, and automatically deployed to **GitHub Pages** using **GitHub Actions**.
+A minimal **Vue 3** application built with **Vite** and **TypeScript**, tested with **Vitest**, styled with **Tailwind CSS**, and automatically deployed to **GitHub Pages** utilizing **GitHub Actions**.
 
 This repository is designed to be:
 

@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import Calculator from "./Calculator.vue";
+import Calculator from "./CalculatorComponent.vue";
 
 describe("Calculator", () => {
   it("adds two numbers", async () => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import HelloWorld from "./components/HelloWorld.vue";
-import Calculator from "./components/Calculator.vue";
+import CalculatorComponent from "./components/CalculatorComponent.vue";
 </script>
 
 <template>
@@ -15,7 +15,7 @@ import Calculator from "./components/Calculator.vue";
     </div>
     <div class="py-10">
       <HelloWorld msg="Hello, Abdulkader" />
-      <Calculator />
+      <CalculatorComponent />
     </div>
   </div>
 </template>
