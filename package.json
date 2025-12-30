@@ -11,7 +11,9 @@
     "lint": "eslint 'src/**/*.{js,ts,vue}'",
     "lint:fix": "eslint 'src/**/*.{js,ts,vue}' --fix",
     "format": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
@@ -24,6 +26,7 @@
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.23",
+    "cypress": "^15.8.1",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
