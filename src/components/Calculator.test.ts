@@ -1,68 +1,61 @@
 import { mount } from "@vue/test-utils";
 import Calculator from "./CalculatorComponent.vue";
+import type { VueWrapper } from "@vue/test-utils";
 
 describe("Calculator", () => {
+  const calculate = async (wrapper: VueWrapper, expr: string) => {
+    for (const ch of expr) {
+      await wrapper.find(`[data-testid="${ch}"]`).trigger("click");
+    }
+    await wrapper.find('[data-testid="="]').trigger("click");
+  };
+
   it("adds two numbers", async () => {
     const wrapper = mount(Calculator);
+    const display = wrapper.find('[data-testid="display"]');
 
-    const inputs = wrapper.findAll("input");
-    await inputs[0].setValue(2);
-    await inputs[1].setValue(3);
+    await calculate(wrapper, "12+3");
 
-    await wrapper.find("button:nth-child(1)").trigger("click");
-
-    expect(wrapper.get('[data-testid="result"]').text()).toContain("5");
+    expect(display.text()).toContain("15");
   });
 
   it("handles division by zero", async () => {
     const wrapper = mount(Calculator);
 
-    const inputs = wrapper.findAll("input");
-    await inputs[0].setValue(10);
-    await inputs[1].setValue(0);
+    const display = wrapper.find('[data-testid="display"]');
 
-    await wrapper.find("button:nth-child(4)").trigger("click");
+    await calculate(wrapper, "12/0");
 
-    expect(wrapper.text()).toContain("0");
+    expect(display.text()).toContain("0");
   });
 
   it("subtracts two numbers", async () => {
     const wrapper = mount(Calculator);
+    const display = wrapper.find('[data-testid="display"]');
 
-    const inputs = wrapper.findAll("input");
-    await inputs[0].setValue(8);
-    await inputs[1].setValue(3);
+    await calculate(wrapper, "12-3");
 
-    await wrapper.find("button:nth-child(2)").trigger("click");
-
-    expect(wrapper.get('[data-testid="result"]').text()).toContain("5");
+    expect(display.text()).toContain("9");
   });
 
   it("multiplies two numbers", async () => {
     const wrapper = mount(Calculator);
+    const display = wrapper.find('[data-testid="display"]');
 
-    const inputs = wrapper.findAll("input");
-    await inputs[0].setValue(4);
-    await inputs[1].setValue(5);
+    await calculate(wrapper, "12*3");
 
-    await wrapper.find("button:nth-child(3)").trigger("click");
-
-    expect(wrapper.get('[data-testid="result"]').text()).toContain("20");
+    expect(display.text()).toContain("36");
   });
 
   it("updates result when inputs change", async () => {
     const wrapper = mount(Calculator);
+    const display = wrapper.find('[data-testid="display"]');
 
-    const inputs = wrapper.findAll("input");
+    await calculate(wrapper, "12-2");
+    expect(display.text()).toContain("10");
+    await wrapper.find('[data-testid="clear"]').trigger("click");
 
-    await inputs[0].setValue(1);
-    await inputs[1].setValue(1);
-    await wrapper.find("button:nth-child(1)").trigger("click");
-    expect(wrapper.get('[data-testid="result"]').text()).toContain("2");
-
-    await inputs[0].setValue(2);
-    await inputs[1].setValue(2);
-    await wrapper.find("button:nth-child(1)").trigger("click");
-    expect(wrapper.get('[data-testid="result"]').text()).toContain("4");
+    await calculate(wrapper, "5+2");
+    expect(display.text()).toContain("7");
   });
 });
