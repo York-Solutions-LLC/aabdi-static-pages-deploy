@@ -3,32 +3,66 @@ describe("Calculator", () => {
     cy.visit("/");
   });
 
-  const calculate = (a, b, operator, expected) => {
-    cy.get("input").eq(0).clear().type(a);
-    cy.get("input").eq(1).clear().type(b);
+  const buttonMap = {
+    "-": "−",
+    "+": "+",
+    "*": "*",
+    "/": "/",
+  };
 
-    cy.contains(operator).click();
-
-    cy.get('[data-testid="result"]').should("contain", expected);
+  const calculate = (expr, expected) => {
+    expr.split("").forEach((el) => cy.contains(buttonMap[el] || el).click());
+    cy.contains("=").click();
+    cy.get('[data-testid="display"]').should("contain", expected);
+    cy.contains("Clear").click();
   };
 
   it("adds two numbers", () => {
-    calculate("2", "3", "+", "5");
+    calculate("12+3", 15);
   });
 
   it("subtracts two numbers", () => {
-    calculate("10", "2", "-", "8");
+    calculate("10-2", 8);
   });
 
   it("divides two numbers", () => {
-    calculate("10", "2", "/", "5");
+    calculate("10/2", 5);
   });
 
-  it("multiplies two numbers", () => {
-    calculate("20", "4", "*", "80");
+  it("Multiplies two numbers", () => {
+    calculate("10*2", 20);
+  });
+  it("Multiplies two numbers using parentheses", () => {
+    calculate("10(2)", 20);
   });
 
-  it("updates result when inputs change", () => {
-    calculate("2", "3", "+", "5");
+  it("squares a number", () => {
+    cy.contains("3").click();
+    cy.contains("x²").click();
+
+    cy.get('[data-testid="display"]').should("contain", 9);
+  });
+
+  it("cubes a number", () => {
+    cy.contains("3").click();
+    cy.contains("x³").click();
+
+    cy.get('[data-testid="display"]').should("contain", 27);
+  });
+
+  it("deletes one digit using backspace", () => {
+    cy.contains("1").click().click();
+    cy.contains("3").click();
+
+    cy.contains("⌫").click();
+
+    cy.get('[data-testid="display"]').should("contain", 11);
+  });
+
+  it("clears the expression", () => {
+    cy.contains("1").click().click();
+    cy.contains("Clear").click();
+
+    cy.get('[data-testid="display"]').should("contain", "");
   });
 });
