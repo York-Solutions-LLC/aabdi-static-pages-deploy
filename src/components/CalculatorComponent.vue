@@ -82,8 +82,8 @@ const handleButton = (btn: CalcButton) => {
       append(btn.value);
       break;
     case "exponent":
-      if (btn.label === "x²") applyPower("x²");
-      if (btn.label === "x³") applyPower("x³");
+      if (btn.label === "x²") applyPower(2);
+      if (btn.label === "x³") applyPower(3);
       break;
     case "action":
       if (btn.value === "=") evaluateExpression();
@@ -128,7 +128,6 @@ const evaluateExpression = () => {
     if (typeof computed !== "number" || Number.isNaN(computed)) {
       throw new Error("Invalid result");
     }
-    // if(expr.includes("").split("/")[0]=== "0")
     result.value = computed;
     expression.value = String(computed);
   } catch {
@@ -137,21 +136,10 @@ const evaluateExpression = () => {
   }
 };
 
-const applyPower = (type: "x²" | "x³") => {
+const applyPower = (type: 2 | 3) => {
   if (!expression.value) return;
 
-  switch (type) {
-    case "x²":
-      expression.value = Function(
-        `"use strict"; return (${expression.value}*${expression.value})`,
-      )();
-      break;
-    case "x³":
-      expression.value = Function(
-        `"use strict"; return (${expression.value}*${expression.value}*${expression.value})`,
-      )();
-      break;
-  }
+  expression.value = Function(`"use strict"; return (${Math.pow(+expression.value, type)})`)();
 };
 
 const clear = () => {

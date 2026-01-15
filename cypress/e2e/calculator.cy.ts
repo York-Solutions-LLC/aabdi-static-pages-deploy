@@ -35,6 +35,9 @@ describe("Calculator", () => {
   it("Multiplies two numbers using parentheses", () => {
     calculate("10(2)", 20);
   });
+  it("gets the percent of", () => {
+    calculate("10%20", 2);
+  });
 
   it("squares a number", () => {
     cy.contains("3").click();
