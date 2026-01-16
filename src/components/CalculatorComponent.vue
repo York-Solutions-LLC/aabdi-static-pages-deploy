@@ -144,7 +144,9 @@ const evaluateExpression = () => {
     if (typeof computed !== "number" || Number.isNaN(computed)) {
       throw new Error("Invalid result");
     }
+    if (history.length >= 5) history.shift();
     history.push({ expression: expression.value, result: computed });
+
     result.value = computed;
     expression.value = String(computed);
   } catch {
