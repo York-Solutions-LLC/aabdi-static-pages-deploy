@@ -68,4 +68,13 @@ describe("Calculator", () => {
 
     cy.get('[data-testid="display"]').should("contain", "");
   });
+
+  it("Tests history", () => {
+    cy.get('[data-testid="1"]').click();
+    cy.get('[data-testid="+"]').click();
+    cy.get('[data-testid="1"]').click();
+    cy.get('[data-testid="="]').click();
+
+    cy.get('[data-testid="history-item"]').should("contain", "1+1 = 2");
+  });
 });

@@ -1,14 +1,28 @@
 <template>
   <div class="max-w-sm mx-auto p-6 rounded-2xl shadow-lg bg-gray-800 text-gray-100 space-y-4">
     <h2 class="text-xl font-semibold text-center">Calculator</h2>
-
+    <p v-if="history.length" class="historyTitle text-gray-500">Historty</p>
+    <div
+      data-testid="history"
+      class="flex flex-col max-h-[30%] text-gray-400 text-left text-sm font-mono"
+    >
+      <!-- {{ item.expression || "" }} -->
+      <p
+        v-for="item in history"
+        :key="item.expression"
+        class="p-1 cursor-pointer hover:shadow hover:bg-gray-600 hover:text-gray-300 w-full rounded"
+        data-testid="history-item"
+        @click="expression = item.expression"
+      >
+        {{ item.expression }} = {{ item.result }}
+      </p>
+    </div>
     <div
       class="bg-gray-700 px-4 py-3 rounded-lg text-right text-xl font-mono"
       data-testid="display"
     >
       {{ expression || "0" }}
     </div>
-
     <div class="grid grid-cols-3 gap-2">
       <button
         v-for="(btn, key) in buttons"
@@ -75,6 +89,8 @@ const buttons: Record<string, CalcButton> = {
   backspace: { label: "⌫", value: "backspace", kind: "action" },
 };
 
+let history = [];
+
 const handleButton = (btn: CalcButton) => {
   switch (btn.kind) {
     case "digit":
@@ -128,6 +144,7 @@ const evaluateExpression = () => {
     if (typeof computed !== "number" || Number.isNaN(computed)) {
       throw new Error("Invalid result");
     }
+    history.push({ expression: expression.value, result: computed });
     result.value = computed;
     expression.value = String(computed);
   } catch {
@@ -144,6 +161,7 @@ const applyPower = (type: 2 | 3) => {
 
 const clear = () => {
   expression.value = "";
+  history = [];
 };
 
 const backspace = () => {
